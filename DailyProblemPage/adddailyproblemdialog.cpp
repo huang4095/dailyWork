@@ -96,21 +96,125 @@ AddDailyProblemDialog::showDialog()
         ui->LE_CN->setText(value.at(8));
         ui->LE_PN->setText(value.at(9));
         currentStatus = value.at(10).toInt();
-        if(userInfor.role =="主任"|| userInfor.role =="厂长"){
+
+        if(userInfor.role!="组长"){
+            ui->Btn_Reset->setVisible(false);
+            ui->Btn_Submit->setVisible(false);
+            if(userInfor.role=="主任" && checkStatus!="新增")
+            {
+                LB->setEnabled(false);
+                TE_checkRemark->setEnabled(false);
+                Btn_checkOk->setEnabled(false);
+                Btn_checkReject->setEnabled(false);
+            }
+            if(userInfor.role=="厂长" && checkStatus!="主任已审核")
+            {
+                LB->setEnabled(false);
+                TE_checkRemark->setEnabled(false);
+                Btn_checkOk->setEnabled(false);
+                Btn_checkReject->setEnabled(false);
+            }
+        init_checkTableWidget();
         QHBoxLayout *hBoxLayout=new QHBoxLayout();
         hBoxLayout->addWidget(LB);
         hBoxLayout->addWidget(TE_checkRemark);
-        hBoxLayout->setMargin(10);
-        ui->verticalLayout_main->insertLayout(6,hBoxLayout);
+        QVBoxLayout *vBoxLayout = new QVBoxLayout();
+        vBoxLayout->insertLayout(0,hBoxLayout);
+        vBoxLayout->insertWidget(1,checkTableWidget);
+        ui->widgetMain->insertLayout(5,vBoxLayout);
         ui->horizontalLayout_OK->addWidget(Btn_checkOk);
         ui->horizontalLayout_OK->addWidget(Btn_checkReject);
         connect(Btn_checkOk, SIGNAL(clicked()), this, SLOT(on_Btn_checkOk()));
         connect(Btn_checkReject, SIGNAL(clicked()), this, SLOT(on_Btn_checkReject()));
         }
-         ui->Btn_Submit->setText("修改");
+        else
+        {
+            if(checkStatus != "新增")
+            {
+                ui->Btn_Submit->setVisible(false);
+                ui->Btn_Reset->setVisible(false);
+            }
+            ui->Btn_Submit->setText("修改");
+        }
+
+
     }
 
 }
+void AddDailyProblemDialog::init_checkTableWidget()
+{
+    checkTableWidget=new QTableWidget();
+
+
+    QStringList HStrList;
+    HStrList.push_back(QString("isDelete"));
+    HStrList.push_back(QString("recordTime"));
+    HStrList.push_back(QString("id"));
+    HStrList.push_back(QString("审批时间"));
+    HStrList.push_back(QString("审批人"));
+    HStrList.push_back(QString("职位"));
+    HStrList.push_back(QString("审批信息"));
+    HStrList.push_back(QString("审批结果"));
+
+    QStringList fieldName;
+    fieldName.append("isDelete");
+    fieldName.append("recordTime");
+    fieldName.append("id");
+    fieldName.append("recordTime");
+    fieldName.append("checkerId");
+    fieldName.append("details");
+    fieldName.append("result");
+
+
+    //qDebug()<<selectId;
+
+    QStringList condition;
+    condition.append("recordId='"+selectId+"'");
+    QList<QStringList> strlist = sql.getFormListbyCondition("checkRecord",fieldName,condition,"2");
+    //qDebug()<<strlist;
+    QList<QStringList> data;
+    for(int i=0;i<strlist.count();i++)
+    {
+        QStringList dateList;
+
+        for(int j=0;j<strlist.at(i).count();j++)
+        {
+
+            switch(j)
+            {
+                case 3:
+                {
+                  QString date=strlist.at(i).at(j);
+
+                  dateList.append( date.replace(10,1," "));
+                  break;
+                }
+
+                case 4:
+                {
+                    dateList.append(sql.idToName(strlist.at(i).at(j),"userInfo"));
+                    QStringList condition;
+                    condition.append("id = '"+ strlist.at(i).at(j) +"'");
+                    QString role=sql.getFormListbyCondition("userInfo","role",condition).at(0).at(0);
+                    dateList.append(role);
+                    break;
+                }
+
+                default:
+                {
+                  dateList.append(strlist.at(i).at(j));
+                  break;
+                }
+            };
+        }
+        data.append(dateList);
+    }
+    sql.tableWidgetShow(HStrList,data,checkTableWidget); //表格显示
+    checkTableWidget->setColumnWidth(6,300);
+    checkTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);//等分列宽
+
+}
+
 
 void AddDailyProblemDialog::on_Btn_checkOk()
 {

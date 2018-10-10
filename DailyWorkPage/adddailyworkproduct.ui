@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>834</width>
-    <height>713</height>
+    <width>628</width>
+    <height>578</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -98,10 +98,13 @@
     <widget class="QWidget" name="widget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_mainWidget" stretch="6,0,0,2,1">
       <property name="leftMargin">
-       <number>50</number>
+       <number>15</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
       </property>
       <property name="rightMargin">
-       <number>50</number>
+       <number>15</number>
       </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_14" stretch="2,1,2">
@@ -545,7 +548,7 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_sumit">
+       <layout class="QHBoxLayout" name="horizontalLayout_Ok">
         <item>
          <spacer name="horizontalSpacer_3">
           <property name="orientation">

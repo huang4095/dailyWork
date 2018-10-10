@@ -104,7 +104,7 @@ void AddDailyWorkProduct::init_checkTableWidget()
     }
     sql.tableWidgetShow(HStrList,data,checkTableWidget); //表格显示
     checkTableWidget->setColumnWidth(6,300);
-    ui->tableWidget_productType->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);//等分列宽
+    checkTableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);//等分列宽
 
 }
 
@@ -250,6 +250,7 @@ void AddDailyWorkProduct::showDialog()
     }else
     {
 
+
         if(userInfor.role!="组长")
         {
 
@@ -289,27 +290,23 @@ void AddDailyWorkProduct::showDialog()
                 Btn_checkReject->setEnabled(false);
             }
 
+
             init_checkTableWidget();
-
-
             QHBoxLayout *hBoxLayout=new QHBoxLayout();
-
             hBoxLayout->addWidget(LB);
             hBoxLayout->addWidget(TE_checkRemark);
+            QVBoxLayout *vBoxLayout = new QVBoxLayout();
+            //vBoxLayout->setMargin(10);
+            vBoxLayout->insertLayout(0,hBoxLayout);
+            vBoxLayout->insertWidget(1,checkTableWidget);
+            ui->verticalLayout_mainWidget->insertLayout(4,vBoxLayout);
+            ui->horizontalLayout_Ok->addWidget(Btn_checkOk);
+            ui->horizontalLayout_Ok->addWidget(Btn_checkReject);
 
-            QHBoxLayout *hBoxLayout_tableWidget=new QHBoxLayout();
 
-            hBoxLayout_tableWidget->addWidget(checkTableWidget);
-            ui->verticalLayout_mainWidget->insertLayout(4,hBoxLayout);
-            ui->verticalLayout_mainWidget->insertLayout(6,hBoxLayout_tableWidget);
-
-            connect(Btn_checkOk, SIGNAL(clicked()), this, SLOT(on_Btn_checkOk()));
-            connect(Btn_checkReject, SIGNAL(clicked()), this, SLOT(on_Btn_checkReject()));
-
-            ui->horizontalLayout_sumit->addWidget(Btn_checkOk);
-            ui->horizontalLayout_sumit->addWidget(Btn_checkReject);
 
         }else{
+
 
             if(checkStatus=="主任已审核" || checkStatus=="厂长已审核")
             {
@@ -331,15 +328,14 @@ void AddDailyWorkProduct::showDialog()
                 ui->Btn_addProcutType->setEnabled(false);
                 ui->Btn_deleteProcutType->setEnabled(false);
                 ui->tableWidget_productType->setEnabled(false);
-
-                init_checkTableWidget();
-                QHBoxLayout *hBoxLayout_tableWidget=new QHBoxLayout();
-
-                hBoxLayout_tableWidget->addWidget(checkTableWidget);
-
-                ui->verticalLayout_mainWidget->insertLayout(6,hBoxLayout_tableWidget);
-
             }
+
+            init_checkTableWidget();
+
+            QVBoxLayout *vBoxLayout = new QVBoxLayout();
+            //vBoxLayout->setMargin(10);
+            vBoxLayout->insertWidget(0,checkTableWidget);
+            ui->verticalLayout_mainWidget->insertLayout(6,vBoxLayout);
         }
         QStringList fieldname,condition;
         fieldname.append("*");

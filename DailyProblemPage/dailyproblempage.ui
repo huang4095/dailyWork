@@ -75,7 +75,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>问题反馈</string>
+         <string>计划任务</string>
         </property>
        </widget>
       </item>
@@ -283,7 +283,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page_problem">
+     <widget class="QWidget" name="page_task">
       <layout class="QVBoxLayout" name="verticalLayout">
        <property name="spacing">
         <number>2</number>
@@ -313,7 +313,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="ComB_department_2">
+          <widget class="QComboBox" name="ComB_department_task">
            <item>
             <property name="text">
              <string>A1车间</string>
@@ -354,7 +354,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="ComB_productLine_2">
+          <widget class="QComboBox" name="ComB_productLine_task">
            <item>
             <property name="text">
              <string>A1车间</string>
@@ -395,14 +395,14 @@
           </widget>
          </item>
          <item>
-          <widget class="QDateEdit" name="DE_PQCstartDate_2">
+          <widget class="QDateEdit" name="DE_StartDate_task">
            <property name="calendarPopup">
             <bool>true</bool>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QDateEdit" name="DE_PQCendDate_2">
+          <widget class="QDateEdit" name="DE_EndDate_task">
            <property name="calendarPopup">
             <bool>true</bool>
            </property>
@@ -429,14 +429,14 @@
           <number>9</number>
          </property>
          <item>
-          <widget class="QPushButton" name="Btn_AddProblem">
+          <widget class="QPushButton" name="Btn_Add_Task">
            <property name="text">
             <string>新增</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="Btn_DeleteProblem">
+          <widget class="QPushButton" name="Btn_Delete_Task">
            <property name="text">
             <string>删除</string>
            </property>
@@ -458,7 +458,7 @@
         </layout>
        </item>
        <item>
-        <widget class="QTableWidget" name="tableWidget_problem"/>
+        <widget class="QTableWidget" name="tableWidget_task"/>
        </item>
       </layout>
      </widget>
