@@ -292,6 +292,17 @@ void DailyWorkPage::on_Btn_searchDailyWork_clicked()
 
     QString enddate = ui->DE_endDate->text();
     QString startdate = ui->DE_startDate->text();
+    int departmentIndex=ui->ComB_dailyWork_department->currentIndex();
+    int productLineIndex=ui->ComB_dailyWork_productLine->currentIndex();
+
+    if(productLineIndex==-1)
+    {
+        productLineIndex=0;
+    }
+    if(departmentIndex==-1)
+    {
+        departmentIndex=0;
+    }
     QList<QStringList> dailyWorklist;
 
     if(userInfor.role=="组长")
@@ -328,7 +339,12 @@ void DailyWorkPage::on_Btn_searchDailyWork_clicked()
             condition.append("userId = '"+underlinglist.at(i).at(2)+"' or ");
 
         }
-        condition.append("userId = '"+userInfor.id+"'  ");
+        condition.append("userId = '"+userInfor.id+"' ");
+
+        if(productLineIndex!=0)
+        {
+             condition.append("and productLineId = '"+productLineListId.at(productLineIndex)+"'");
+        }
         QStringList orderField;
         orderField.append("recordTime");
 
@@ -349,7 +365,12 @@ void DailyWorkPage::on_Btn_searchDailyWork_clicked()
             condition.append("status in(2,4)  ) and (");
         }
 
-        condition.append("departmentId = '"+userInfor.departmentId+"'");
+        condition.append("departmentId = '"+userInfor.departmentId+"' ");
+
+        if(productLineIndex!=0)
+        {
+             condition.append(" and productLineId = '"+productLineListId.at(productLineIndex)+"'");
+        }
 
         QStringList orderField;
         orderField.append("recordTime");
@@ -357,54 +378,21 @@ void DailyWorkPage::on_Btn_searchDailyWork_clicked()
         dailyWorklist=sql.getFormListbyCondition("dailyWork",fieldName,condition,orderField);
     }else
     {
-        int departmentIndex=ui->ComB_dailyWork_department->currentIndex();
-        int productLineIndex=ui->ComB_dailyWork_productLine->currentIndex();
 
-        if(departmentIndex==0 && productLineIndex==0)
+        QStringList condition;
+        condition.append("recordDate between '"+startdate+"' and '"+enddate+"' and ");
+        condition.append("status = 2 ");
+        if(departmentIndex!=0)
         {
-            QStringList condition;
-
-            condition.append("recordDate between '"+startdate+"' and '"+enddate+"' and ");
-            condition.append("status = 2  ");
-            dailyWorklist=sql.getFormListbyCondition("dailyWork",fieldName,condition);
-
-        }else if(departmentIndex==0)
-        {
-
-            QStringList orderField;
-            orderField.append("recordTime");
-
-
-            QStringList condition;
-            condition.append("recordDate between '"+startdate+"' and '"+enddate+"') and ( ");
-            condition.append("status = 2 and ");
-            condition.append("productLineId = '"+productLineListId.at(productLineIndex)+"'");
-
-            dailyWorklist=sql.getFormListbyCondition("dailyWork",fieldName,condition,orderField);
-
-        }else if(productLineIndex==0)
-        {
-            QStringList orderField;
-            orderField.append("recordTime");
-
-
-            QStringList condition;
-            condition.append("recordDate between '"+startdate+"' and '"+enddate+"') and ( ");
-            condition.append("status = 2 and ");
-            condition.append("departmentId = '"+departmentListId.at(departmentIndex)+"'");
-            dailyWorklist=sql.getFormListbyCondition("dailyWork",fieldName,condition,orderField);
-        }else
-        {
-            QStringList orderField;
-            orderField.append("recordTime");
-            QStringList condition;
-            condition.append("recordDate between '"+startdate+"' and '"+enddate+"') and ( ");
-            condition.append("status = 2 and ");
-            condition.append("departmentId = '"+departmentListId.at(departmentIndex)+"' and ");
-            condition.append("productLineId = '"+productLineListId.at(productLineIndex)+"'");
-            dailyWorklist=sql.getFormListbyCondition("dailyWork",fieldName,condition,orderField);
-
+            condition.append("and departmentId = '"+departmentListId.at(departmentIndex)+"'");
         }
+        if(productLineIndex!=0)
+        {
+             condition.append(" and productLineId = '"+productLineListId.at(productLineIndex)+"'");
+        }
+
+        dailyWorklist=sql.getFormListbyCondition("dailyWork",fieldName,condition);
+
 
     }
 
