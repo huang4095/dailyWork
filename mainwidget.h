@@ -39,7 +39,7 @@ private:
     DailyProblemPage *dailyProblemPage;
     DailyWorkPage *dailyWorkPage;
     SettingPage *settingPage;
-    int ss;
+
 
 private slots:
     void initForm();
