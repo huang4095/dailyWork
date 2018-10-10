@@ -813,20 +813,20 @@ void DailyWorkPage::on_Btn_search_attendance_clicked()
     fieldName.append("absenteeism");
     fieldName.append("violation");
     fieldName.append("dutyMsg");
-    QString condition("");
+    QStringList condition("");
     QString id,start,end;
     if(ui->ComB_attendance_department->currentText()!=""){
         id=departmentListId.at(ui->ComB_attendance_department->currentIndex());
-        condition += QString("departmentId = '%1' and ").arg(id);
+        condition.append(QString("departmentId = '%1' and ").arg(id));
     }
     if(ui->ComB_attendance_productLine->currentText()!=""){
         id=productLineListId.at(ui->ComB_attendance_productLine->currentIndex());
-        condition += QString("productLineId = '%1' and ").arg(id);
+        condition.append(QString("productLineId = '%1' and ").arg(id));
     }
     start = ui->DE_startDate_attendance->text();
     end = ui->DE_endDate_attendance->text();
-    condition += QString("recordDate between '%1' and '%2'").arg(start).arg(end);
-    QList<QStringList> dailyWorklist = sql.getFormListbyCondition(QString("dutyrecord"),fieldName,condition);
+    condition.append(QString("recordDate between '%1' and '%2'").arg(start).arg(end));
+    QList<QStringList> dailyWorklist = sql.getFormListbyCondition("dutyrecord",fieldName,condition);
 
     QList<QStringList> data;
     QList<int> redRow;
