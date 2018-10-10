@@ -9,8 +9,6 @@
 #include"SqlMag/connectpool.h"
 class QToolButton;
 
-
-
 namespace Ui {
 class MainWidget;
 }
@@ -39,7 +37,6 @@ private:
     DailyProblemPage *dailyProblemPage;
     DailyWorkPage *dailyWorkPage;
     SettingPage *settingPage;
-    int ss;
 
 private slots:
     void initForm();

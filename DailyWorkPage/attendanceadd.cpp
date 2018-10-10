@@ -54,6 +54,8 @@ void AttendanceAdd::showDialog()
         ui->TE_namelist->setPlainText(strList.at(11));
     }
 
+
+
 }
 
 void AttendanceAdd::on_Btn_Submit_clicked()

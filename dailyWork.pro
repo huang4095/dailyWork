@@ -34,7 +34,8 @@ SOURCES     += main.cpp \
     DailyWorkPage/attendanceadd.cpp \
     DailyWorkPage/addmaintaindialog.cpp \
     DailyWorkPage/addRejects.cpp \
-    DailyProblemPage/adddailyproblemdialog.cpp
+    DailyProblemPage/adddailyproblemdialog.cpp \
+    DailyProblemPage/addtask.cpp
 
 SOURCES     += appInit/quiwidget.cpp
 SOURCES     += appInit/appinit.cpp
@@ -57,7 +58,8 @@ HEADERS     += appInit/quiwidget.h \
     DailyWorkPage/attendanceadd.h \
     DailyWorkPage/addmaintaindialog.h \
     DailyWorkPage/addRejects.h \
-    DailyProblemPage/adddailyproblemdialog.h
+    DailyProblemPage/adddailyproblemdialog.h \
+    DailyProblemPage/addtask.h
 
 HEADERS     += appInit/appinit.h
 HEADERS     +=
@@ -76,7 +78,8 @@ FORMS       += \
     DailyWorkPage/attendanceadd.ui \
     DailyWorkPage/addmaintaindialog.ui \
     DailyWorkPage/addRejects.ui \
-    DailyProblemPage/adddailyproblemdialog.ui
+    DailyProblemPage/adddailyproblemdialog.ui \
+    DailyProblemPage/addtask.ui
 
 RESOURCES   += main.qrc
 RESOURCES   += qss.qrc

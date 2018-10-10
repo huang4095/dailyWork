@@ -292,17 +292,6 @@ void DailyWorkPage::on_Btn_searchDailyWork_clicked()
 
     QString enddate = ui->DE_endDate->text();
     QString startdate = ui->DE_startDate->text();
-    int departmentIndex=ui->ComB_dailyWork_department->currentIndex();
-    int productLineIndex=ui->ComB_dailyWork_productLine->currentIndex();
-
-    if(productLineIndex==-1)
-    {
-        productLineIndex=0;
-    }
-    if(departmentIndex==-1)
-    {
-        departmentIndex=0;
-    }
     QList<QStringList> dailyWorklist;
 
     if(userInfor.role=="组长")
@@ -339,12 +328,7 @@ void DailyWorkPage::on_Btn_searchDailyWork_clicked()
             condition.append("userId = '"+underlinglist.at(i).at(2)+"' or ");
 
         }
-        condition.append("userId = '"+userInfor.id+"' ");
-
-        if(productLineIndex!=0)
-        {
-             condition.append("and productLineId = '"+productLineListId.at(productLineIndex)+"'");
-        }
+        condition.append("userId = '"+userInfor.id+"'  ");
         QStringList orderField;
         orderField.append("recordTime");
 
@@ -365,12 +349,7 @@ void DailyWorkPage::on_Btn_searchDailyWork_clicked()
             condition.append("status in(2,4)  ) and (");
         }
 
-        condition.append("departmentId = '"+userInfor.departmentId+"' ");
-
-        if(productLineIndex!=0)
-        {
-             condition.append(" and productLineId = '"+productLineListId.at(productLineIndex)+"'");
-        }
+        condition.append("departmentId = '"+userInfor.departmentId+"'");
 
         QStringList orderField;
         orderField.append("recordTime");
@@ -378,21 +357,54 @@ void DailyWorkPage::on_Btn_searchDailyWork_clicked()
         dailyWorklist=sql.getFormListbyCondition("dailyWork",fieldName,condition,orderField);
     }else
     {
+        int departmentIndex=ui->ComB_dailyWork_department->currentIndex();
+        int productLineIndex=ui->ComB_dailyWork_productLine->currentIndex();
 
-        QStringList condition;
-        condition.append("recordDate between '"+startdate+"' and '"+enddate+"' and ");
-        condition.append("status = 2 ");
-        if(departmentIndex!=0)
+        if(departmentIndex==0 && productLineIndex==0)
         {
-            condition.append("and departmentId = '"+departmentListId.at(departmentIndex)+"'");
-        }
-        if(productLineIndex!=0)
+            QStringList condition;
+
+            condition.append("recordDate between '"+startdate+"' and '"+enddate+"' and ");
+            condition.append("status = 2  ");
+            dailyWorklist=sql.getFormListbyCondition("dailyWork",fieldName,condition);
+
+        }else if(departmentIndex==0)
         {
-             condition.append(" and productLineId = '"+productLineListId.at(productLineIndex)+"'");
+
+            QStringList orderField;
+            orderField.append("recordTime");
+
+
+            QStringList condition;
+            condition.append("recordDate between '"+startdate+"' and '"+enddate+"') and ( ");
+            condition.append("status = 2 and ");
+            condition.append("productLineId = '"+productLineListId.at(productLineIndex)+"'");
+
+            dailyWorklist=sql.getFormListbyCondition("dailyWork",fieldName,condition,orderField);
+
+        }else if(productLineIndex==0)
+        {
+            QStringList orderField;
+            orderField.append("recordTime");
+
+
+            QStringList condition;
+            condition.append("recordDate between '"+startdate+"' and '"+enddate+"') and ( ");
+            condition.append("status = 2 and ");
+            condition.append("departmentId = '"+departmentListId.at(departmentIndex)+"'");
+            dailyWorklist=sql.getFormListbyCondition("dailyWork",fieldName,condition,orderField);
+        }else
+        {
+            QStringList orderField;
+            orderField.append("recordTime");
+            QStringList condition;
+            condition.append("recordDate between '"+startdate+"' and '"+enddate+"') and ( ");
+            condition.append("status = 2 and ");
+            condition.append("departmentId = '"+departmentListId.at(departmentIndex)+"' and ");
+            condition.append("productLineId = '"+productLineListId.at(productLineIndex)+"'");
+            dailyWorklist=sql.getFormListbyCondition("dailyWork",fieldName,condition,orderField);
+
         }
-
-        dailyWorklist=sql.getFormListbyCondition("dailyWork",fieldName,condition);
-
 
     }
 
@@ -801,20 +813,20 @@ void DailyWorkPage::on_Btn_search_attendance_clicked()
     fieldName.append("absenteeism");
     fieldName.append("violation");
     fieldName.append("dutyMsg");
-    QStringList condition("");
+    QString condition("");
     QString id,start,end;
     if(ui->ComB_attendance_department->currentText()!=""){
         id=departmentListId.at(ui->ComB_attendance_department->currentIndex());
-        condition.append(QString("departmentId = '%1' and ").arg(id));
+        condition += QString("departmentId = '%1' and ").arg(id);
     }
     if(ui->ComB_attendance_productLine->currentText()!=""){
         id=productLineListId.at(ui->ComB_attendance_productLine->currentIndex());
-        condition.append(QString("productLineId = '%1' and ").arg(id));
+        condition += QString("productLineId = '%1' and ").arg(id);
     }
     start = ui->DE_startDate_attendance->text();
     end = ui->DE_endDate_attendance->text();
-    condition.append(QString("recordDate between '%1' and '%2'").arg(start).arg(end));
-    QList<QStringList> dailyWorklist = sql.getFormListbyCondition("dutyrecord",fieldName,condition);
+    condition += QString("recordDate between '%1' and '%2'").arg(start).arg(end);
+    QList<QStringList> dailyWorklist = sql.getFormListbyCondition(QString("dutyrecord"),fieldName,condition);
 
     QList<QStringList> data;
     QList<int> redRow;
@@ -972,17 +984,14 @@ void DailyWorkPage::on_Btn_searchMaintain_clicked()
     fieldName.append("maintainType");
     fieldName.append("remark");
 
-    QString condition("");
+    QStringList condition;
     QString id,start,end;
-//    if(ui->ComB_attendance_department->currentText()!=""){
-//        id=departmentListId.at(ui->ComB_attendance_department->currentIndex());
-//        condition += QString("departmentId = '%1' and ").arg(id);
-//    }
-    condition += QString("maintainType = '%1' and ").arg(ui->ComB_maintainType->currentText());
+
+    condition.append( QString("maintainType = '%1' and ").arg(ui->ComB_maintainType->currentText()));
 
     if(ui->ComB_maintainPerson->currentText()!=""){
         id=maintainerId.at(ui->ComB_maintainPerson->currentIndex());
-        condition += QString("maintainerId = '%1' and ").arg(id);
+        condition.append( QString("maintainerId = '%1' and ").arg(id));
 
     }
 

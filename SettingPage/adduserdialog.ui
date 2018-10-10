@@ -260,22 +260,7 @@
               </property>
               <item>
                <property name="text">
-                <string>总经理</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>总监</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>厂长</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>主任</string>
+                <string>作业员</string>
                </property>
               </item>
               <item>
@@ -285,7 +270,22 @@
               </item>
               <item>
                <property name="text">
-                <string>作业员</string>
+                <string>主任</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>厂长</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>总经理</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>总监</string>
                </property>
               </item>
              </widget>

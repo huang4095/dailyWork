@@ -65,6 +65,8 @@ void DailyProblemPage::showPage()
     {
 
         ui->ComB_department_PQC->setEnabled(false);
+        ui->Btn_AddPQC->setVisible(false);
+        ui->Btn_DeletePQC->setVisible(false);
 
     }
 

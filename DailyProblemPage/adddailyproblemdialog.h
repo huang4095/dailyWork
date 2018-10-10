@@ -26,6 +26,7 @@ private slots:
     
     void on_Btn_checkOk();
     void on_Btn_checkReject();
+    void init_checkTableWidget();
 private:
     Ui::AddDailyProblemDialog *ui;
     sqlDataSource sql;
@@ -34,6 +35,7 @@ private:
     QPushButton *Btn_checkReject;
     QTextEdit   *TE_checkRemark;
     QLabel *LB;
+    QTableWidget *checkTableWidget;
     QList<addProduct>    ProductList;
     int currentStatus = 0;
 };
